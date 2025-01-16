@@ -18,7 +18,7 @@ const SignUp = () => {
       .post(`${SERVER_URL}/user/signup`, { username, email, password })
       .then((res) => {
         setMessage(true);
-        enqueueSnackbar("Sign Up Successfully", { variant: "success" });
+        enqueueSnackbar("Sign Up Successfully, A verification link has been sent to your email. Please check your inbox.", { variant: "success" });
         navigate("/"); // Redirect to login after successful sign-up
       })
       .catch((error) => {
