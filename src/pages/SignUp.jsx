@@ -18,8 +18,8 @@ const SignUp = () => {
       .post(`${SERVER_URL}/user/signup`, { username, email, password })
       .then((res) => {
         setMessage(true);
-        // enqueueSnackbar("Sign Up Successfully", { variant: "success" });
-        // navigate("/");
+        enqueueSnackbar("Sign Up Successfully", { variant: "success" });
+        navigate("/"); // Redirect to login after successful sign-up
       })
       .catch((error) => {
         enqueueSnackbar("Sign Up failed", { variant: "error" });
@@ -28,10 +28,28 @@ const SignUp = () => {
   };
 
   return (
-    <div className="p-4">
-      <h1 className="mx-4 my-4">Sign Up</h1>
-      <div className="p-4">
-        <div className="form-group">
+    <div
+      style={{
+        backgroundImage: `url('https://source.unsplash.com/random/1920x1080/?books')`, // Background image URL
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        minHeight: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <div
+        className="card shadow-lg p-4"
+        style={{
+          maxWidth: "400px",
+          width: "100%",
+          background: "rgba(255, 255, 255, 0.9)", // Slight transparency
+          borderRadius: "10px",
+        }}
+      >
+        <h1 className="text-center mb-4">Sign Up</h1>
+        <div className="form-group mb-3">
           <label htmlFor="username">Username</label>
           <input
             type="text"
@@ -42,7 +60,7 @@ const SignUp = () => {
             placeholder="Enter your username"
           />
         </div>
-        <div className="form-group">
+        <div className="form-group mb-3">
           <label htmlFor="email">Email</label>
           <input
             type="email"
@@ -53,7 +71,7 @@ const SignUp = () => {
             placeholder="Enter your email"
           />
         </div>
-        <div className="form-group">
+        <div className="form-group mb-3">
           <label htmlFor="password">Password</label>
           <input
             type="password"
@@ -65,14 +83,14 @@ const SignUp = () => {
           />
         </div>
         {message && (
-          <p className="verfiy-message">Verfiy link sent to your email</p>
+          <p className="text-center text-success">Verification link sent to your email</p>
         )}
-        <button className="btn btn-primary mt-3" onClick={handleSignUp}>
+        <button className="btn btn-primary w-100 mt-3" onClick={handleSignUp}>
           Sign Up
         </button>
-        <div>
-          <p className="mx-4 ">
-            Already have an account ?<Link to="/"> Login</Link>
+        <div className="text-center mt-3">
+          <p>
+            Already have an account? <Link to="/">Login</Link>
           </p>
         </div>
       </div>
