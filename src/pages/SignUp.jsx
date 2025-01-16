@@ -30,7 +30,7 @@ const SignUp = () => {
   return (
     <div
       style={{
-        backgroundImage: `url('https://source.unsplash.com/random/1920x1080/?books')`, // Background image URL
+        backgroundImage: `url('https://images.pexels.com/photos/7134987/pexels-photo-7134987.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')`, // Background image URL
         backgroundSize: "cover",
         backgroundPosition: "center",
         minHeight: "100vh",
