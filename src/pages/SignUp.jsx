@@ -83,7 +83,19 @@ const SignUp = () => {
           />
         </div>
         {message && (
-          <p className="text-center text-success">Verification link sent to your email</p>
+          <div
+            className="text-center mt-3"
+            style={{
+              color: "green", 
+              fontWeight: "bold", 
+              fontSize: "1.1rem",
+              padding: "10px",
+              backgroundColor: "rgba(0, 255, 0, 0.1)", // Optional background color
+              borderRadius: "5px"
+            }}
+          >
+            <p>A verification link has been sent to your email. Please check your inbox.</p>
+          </div>
         )}
         <button className="btn btn-primary w-100 mt-3" onClick={handleSignUp}>
           Sign Up
