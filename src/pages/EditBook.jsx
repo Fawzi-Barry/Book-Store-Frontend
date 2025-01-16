@@ -7,16 +7,13 @@ import { useSnackbar } from "notistack";
 import React from "react";
 
 const EditBook = () => {
-  const [title, settitle] = useState("");
-  const [author, setauthor] = useState("");
-  const [publishYear, setpublishYear] = useState("");
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [publishYear, setPublishYear] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
   const { enqueueSnackbar } = useSnackbar();
   const token = localStorage.getItem("token");
-  console.log(title);
-  console.log(author);
-  console.log(publishYear);
 
   useEffect(() => {
     axios
@@ -24,14 +21,15 @@ const EditBook = () => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        settitle(response.data.title);
-        setauthor(response.data.author);
-        setpublishYear(response.data.publishYear);
+        setTitle(response.data.title);
+        setAuthor(response.data.author);
+        setPublishYear(response.data.publishYear);
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
+        enqueueSnackbar("Failed to fetch book details", { variant: "error" });
       });
-  }, []);
+  }, [id, token, enqueueSnackbar]);
 
   const handleEditBook = () => {
     const data = {
@@ -39,36 +37,36 @@ const EditBook = () => {
       author,
       publishYear,
     };
+
     axios
       .put(`${SERVER_URL}/book/${id}`, data, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {
-        enqueueSnackbar("book updated successfully");
+        enqueueSnackbar("Book updated successfully", { variant: "success" });
         navigate("/home");
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
+        enqueueSnackbar("Failed to update book. Please try again.", { variant: "error" });
       });
   };
+
   return (
     <div className="container mt-5">
-      {/* Back Button Outside the Box */}
+      {/* Back Button */}
       <div className="mb-3">
         <BackButton />
       </div>
 
-      {/* Card for Form */}
-      <div className="card">
+      {/* Card for Edit Book Form */}
+      <div className="card shadow-lg">
         <div className="card-body">
-          <h1 className="mb-4 text-center">Edit Book</h1>
+          <h1 className="text-center mb-4">Edit Book</h1>
           <form>
-            {/* Title Input */}
-            <div className="mb-3 row align-items-center">
-              <label
-                htmlFor="title"
-                className="col-sm-2 col-form-label text-end"
-              >
+            {/* Title Field */}
+            <div className="mb-3 row">
+              <label htmlFor="title" className="col-sm-2 col-form-label text-end fw-bold">
                 Title
               </label>
               <div className="col-sm-10">
@@ -78,17 +76,14 @@ const EditBook = () => {
                   className="form-control"
                   placeholder="Enter book title"
                   value={title}
-                  onChange={(e) => settitle(e.target.value)}
+                  onChange={(e) => setTitle(e.target.value)}
                 />
               </div>
             </div>
 
-            {/* Author Input */}
-            <div className="mb-3 row align-items-center">
-              <label
-                htmlFor="author"
-                className="col-sm-2 col-form-label text-end"
-              >
+            {/* Author Field */}
+            <div className="mb-3 row">
+              <label htmlFor="author" className="col-sm-2 col-form-label text-end fw-bold">
                 Author
               </label>
               <div className="col-sm-10">
@@ -98,17 +93,14 @@ const EditBook = () => {
                   className="form-control"
                   placeholder="Enter author name"
                   value={author}
-                  onChange={(e) => setauthor(e.target.value)}
+                  onChange={(e) => setAuthor(e.target.value)}
                 />
               </div>
             </div>
 
-            {/* Publish Year Input */}
-            <div className="mb-3 row align-items-center">
-              <label
-                htmlFor="publishYear"
-                className="col-sm-2 col-form-label text-end"
-              >
+            {/* Publish Year Field */}
+            <div className="mb-3 row">
+              <label htmlFor="publishYear" className="col-sm-2 col-form-label text-end fw-bold">
                 Publish Year
               </label>
               <div className="col-sm-10">
@@ -118,7 +110,7 @@ const EditBook = () => {
                   className="form-control"
                   placeholder="Enter publish year"
                   value={publishYear}
-                  onChange={(e) => setpublishYear(e.target.value)}
+                  onChange={(e) => setPublishYear(e.target.value)}
                 />
               </div>
             </div>
@@ -131,7 +123,7 @@ const EditBook = () => {
                   className="btn btn-primary w-100"
                   onClick={handleEditBook}
                 >
-                  Save
+                  Save Changes
                 </button>
               </div>
             </div>
