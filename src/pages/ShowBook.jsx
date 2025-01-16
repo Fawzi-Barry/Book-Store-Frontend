@@ -5,11 +5,10 @@ import BackButton from "../component/BackButton";
 import { SERVER_URL } from "../global";
 
 const ShowBook = () => {
-  const [book, setBook] = useState(null); // Initialize as null to handle loading state
+  const [book, setBook] = useState(null); // Book data
   const [imageError, setImageError] = useState(false); // Track image load error
   const { id } = useParams();
   const token = localStorage.getItem("token");
-  console.log(book);
 
   useEffect(() => {
     axios
@@ -17,66 +16,82 @@ const ShowBook = () => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        console.log(response);
         setBook(response.data);
       })
       .catch((error) => {
-        console.log(error);
+        console.error("Error fetching book details:", error);
       });
-  }, [id]);
+  }, [id, token]);
 
   const handleImageError = () => {
-    setImageError(true); // Set error state if image fails to load
+    setImageError(true);
   };
+
   return (
-    <div className="p-4">
-      <BackButton />
-      <h1 className="my-4">Show Book</h1>
-      <div className="border border-2 rounded p-4">
-        {book && book.image && (
-          <div className="w-1/3 pr-4">
-            <img
-              src={book.image} // Ensure correct image path
-              alt=""
-            />
-          </div>
-        )}
-        {book ? (
-          <>
-            <div className="my-4">
-              <span className="border p-1 rounded mx-2">ID:</span>
-              <span>{book._id}</span>
-            </div>
-
-            <div className="my-4">
-              <span className="border p-1 rounded mx-2">Title:</span>
-              <span>{book.title}</span>
-            </div>
-
-            <div className="my-4">
-              <span className="border p-1 rounded mx-2">Author:</span>
-              <span>{book.author}</span>
-            </div>
-
-            <div className="my-4">
-              <span className="border p-1 rounded mx-2">Publish Year:</span>
-              <span>{book.publishYear}</span>
-            </div>
-
-            <div className="my-4">
-              <span className="border p-1 rounded mx-2">Created Time:</span>
-              <span>{new Date(book.createdAt).toLocaleString()}</span>
-            </div>
-
-            <div className="my-4">
-              <span className="border p-1 rounded mx-2">Last Update Time:</span>
-              <span>{new Date(book.updatedAt).toLocaleString()}</span>
-            </div>
-          </>
-        ) : (
-          <p>Loading...</p>
-        )}
+    <div className="container my-5">
+      {/* Back Button */}
+      <div className="mb-4">
+        <BackButton />
       </div>
+
+      {/* Show Book Header */}
+      <h1 className="text-center mb-4">Book Details</h1>
+
+      {/* Book Details Card */}
+      {book ? (
+        <div className="card shadow-sm">
+          <div className="row g-0">
+            {/* Book Image */}
+            <div className="col-md-4">
+              {book.image && !imageError ? (
+                <img
+                  src={book.image}
+                  alt={book.title}
+                  className="img-fluid rounded-start"
+                  onError={handleImageError}
+                />
+              ) : (
+                <div className="d-flex justify-content-center align-items-center h-100 bg-light text-muted">
+                  <p>No Image Available</p>
+                </div>
+              )}
+            </div>
+
+            {/* Book Details */}
+            <div className="col-md-8">
+              <div className="card-body">
+                <h5 className="card-title">{book.title}</h5>
+
+                <ul className="list-group list-group-flush">
+                  <li className="list-group-item">
+                    <strong>ID:</strong> {book._id}
+                  </li>
+                  <li className="list-group-item">
+                    <strong>Author:</strong> {book.author}
+                  </li>
+                  <li className="list-group-item">
+                    <strong>Publish Year:</strong> {book.publishYear}
+                  </li>
+                  <li className="list-group-item">
+                    <strong>Created Time:</strong>{" "}
+                    {new Date(book.createdAt).toLocaleString()}
+                  </li>
+                  <li className="list-group-item">
+                    <strong>Last Update Time:</strong>{" "}
+                    {new Date(book.updatedAt).toLocaleString()}
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="text-center">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
