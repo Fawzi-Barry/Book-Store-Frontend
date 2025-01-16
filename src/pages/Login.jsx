@@ -18,28 +18,46 @@ const Login = () => {
         const { username } = response.data;
         console.log("Username:", username);
 
-        // تخزين البيانات في Local Storage
+        // Store data in Local Storage
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("user", response.data.username);
 
-        // عرض رسالة نجاح
+        // Show success message
         enqueueSnackbar("Login Successfully", { variant: "success" });
 
-        // الانتقال إلى الصفحة الرئيسية
+        // Navigate to the home page
         navigate("/home", { state: { username } });
       })
       .catch((error) => {
-        // عرض رسالة خطأ
+        // Show error message
         enqueueSnackbar("Login failed", { variant: "error" });
         console.error(error);
       });
   };
 
   return (
-    <div className="p-4">
-      <h1 className="mx-4 my-4">Login</h1>
-      <div className="p-4">
-        <div className="form-group">
+    <div
+      style={{
+        backgroundImage: `url('https://source.unsplash.com/random/1920x1080/?books')`, // Replace with your desired image URL
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        minHeight: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <div
+        className="card shadow-lg p-4"
+        style={{
+          maxWidth: "400px",
+          width: "100%",
+          background: "rgba(255, 255, 255, 0.9)", // Slight transparency
+          borderRadius: "10px",
+        }}
+      >
+        <h1 className="text-center mb-4">Login</h1>
+        <div className="form-group mb-3">
           <label htmlFor="username">Username</label>
           <input
             type="text"
@@ -50,7 +68,7 @@ const Login = () => {
             placeholder="Enter your username"
           />
         </div>
-        <div className="form-group">
+        <div className="form-group mb-3">
           <label htmlFor="password">Password</label>
           <input
             type="password"
@@ -61,11 +79,11 @@ const Login = () => {
             placeholder="Enter your password"
           />
         </div>
-        <button className="btn btn-primary mt-3" onClick={handleLogin}>
+        <button className="btn btn-primary w-100" onClick={handleLogin}>
           Login
         </button>
-        <div className="mt-3">
-          <p className="mx-4">
+        <div className="text-center mt-3">
+          <p>
             Don't have an account? <Link to="/signup">Sign up</Link>
           </p>
         </div>
